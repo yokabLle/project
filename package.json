@@ -1,0 +1,11 @@
+{
+  "name": "project",
+  "author": "yokabLle",
+  "version": "0.0.1",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-livereload": "^3.8.1",
+  }
+}
