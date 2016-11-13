@@ -1,12 +1,13 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var livereload = require('gulp-livereload');
+var includer = require('gulp-htmlincluder');
 
 
 // ---------------------------Connect-----------------
 gulp.task('connect', function() {
   connect.server({
-    root: 'develop',
+    root: 'build',
     port: 8888,
     livereload: true
   });
@@ -14,18 +15,20 @@ gulp.task('connect', function() {
 
 
 // --------------------------Tasks-------------------
-gulp.task('html', function () {
-  gulp.src('develop/*.html')
-    .pipe(connect.reload());
+gulp.task('htmlIncluder', function() {
+    gulp.src('develop/**/*.html')
+    	.pipe(includer())
+        .pipe(gulp.dest('build/'))
+        .pipe(connect.reload());
 });
  
 
 // ---------------------------Watch------------------
 gulp.task('watch', function () {
-  gulp.watch(['develop/*.html'], ['html']);
+  gulp.watch(['develop/**/*.html'], ['htmlIncluder']);
 });
 
 
 
 // ------------------------Main Task-----------------
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['htmlIncluder', 'connect', 'watch']);
