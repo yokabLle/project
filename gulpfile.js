@@ -2,10 +2,13 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var livereload = require('gulp-livereload');
 var includer = require('gulp-htmlincluder');
-var less = require('gulp-less');
+var sass = require('gulp-sass');
+var spritesmith = require('gulp.spritesmith');
 
 
-// ---------------------------Connect-----------------
+// -----------------------------------
+// Connect
+// -----------------------------------
 gulp.task('connect', function() {
   connect.server({
     root: 'build',
@@ -14,8 +17,10 @@ gulp.task('connect', function() {
   });
 });
 
+// -----------------------------------
+// Tasks
+// -----------------------------------
 
-// --------------------------Tasks-------------------
 // -----html
 gulp.task('htmlIncluder', function() {
     gulp.src('develop/**/*.html')
@@ -23,21 +28,27 @@ gulp.task('htmlIncluder', function() {
         .pipe(gulp.dest('build/'))
         .pipe(connect.reload());
 });
+
 // -----Less
-gulp.task('less', function () {
-  gulp.src('develop/less/**/*.less')
-    .pipe(less())
+gulp.task('sass', function () {
+  return gulp.src('develop/sass/**/*.scss')
+    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
     .pipe(gulp.dest('build/css/'))
     .pipe(connect.reload());
 });
 
+// -----------------------------------
+// Watch
+// -----------------------------------
 
-// ---------------------------Watch------------------
 gulp.task('watch', function () {
   gulp.watch(['develop/**/*.html'], ['htmlIncluder']);
-  gulp.watch(['develop/less/**/*.less'], ['less']);
+  gulp.watch(['develop/sass/**/*.scss'], ['sass']);
 });
 
 
-// ------------------------Main Task-----------------
-gulp.task('default', ['htmlIncluder', 'less', 'connect', 'watch']);
+// -----------------------------------
+// Main Task
+// -----------------------------------
+
+gulp.task('default', ['htmlIncluder', 'sass', 'connect', 'watch']);
