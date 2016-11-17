@@ -1,9 +1,11 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var livereload = require('gulp-livereload');
+var rename = require("gulp-rename");
 var includer = require('gulp-htmlincluder');
 var sass = require('gulp-sass');
 var spritesmith = require('gulp.spritesmith');
+var templater = require('spritesheet-templates');
 
 
 // -----------------------------------
@@ -21,21 +23,38 @@ gulp.task('connect', function() {
 // Tasks
 // -----------------------------------
 
-// -----html
+// -----Html
 gulp.task('htmlIncluder', function() {
-    gulp.src('develop/**/*.html')
-    	.pipe(includer())
-        .pipe(gulp.dest('build/'))
-        .pipe(connect.reload());
+  gulp.src('develop/**/*.html')
+  	.pipe(includer())
+    .pipe(gulp.dest('build/'))
+    .pipe(connect.reload());
 });
 
-// -----Less
+// -----Sass
 gulp.task('sass', function () {
-  return gulp.src('develop/sass/**/*.scss')
+  gulp.src('develop/stylesheets/**/*.scss')
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+    .pipe(rename('style.css'))
     .pipe(gulp.dest('build/css/'))
     .pipe(connect.reload());
 });
+
+// -----Sprite
+gulp.task('sprite', function () {
+  var spriteData = 
+    gulp.src('develop/images/*.png')
+      .pipe(spritesmith({
+        imgName: 'images/sprite.png',
+        cssName: '_sprite.scss',
+        cssFormat: 'scss',
+        algorithm: 'binary-tree',
+        padding: 10
+      }))
+  spriteData.img.pipe(gulp.dest('./build/'));
+  spriteData.css.pipe(gulp.dest('./develop/stylesheets/abstracts/'));
+});
+
 
 // -----------------------------------
 // Watch
@@ -43,7 +62,7 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function () {
   gulp.watch(['develop/**/*.html'], ['htmlIncluder']);
-  gulp.watch(['develop/sass/**/*.scss'], ['sass']);
+  gulp.watch(['develop/stylesheets/**/*.scss'], ['sass']);
 });
 
 
