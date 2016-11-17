@@ -1,0 +1,24 @@
+// ---------------------------
+// GRID FOR SOME REASON
+// ---------------------------
+
+@mixin grid ($name, $num) {
+	@for $i from 1 through $num {
+		.#{$name}#{$i} {
+		width: $i * (100% / $num);
+		}
+	}
+}
+
+
+// ---------------------------
+// USED
+// ---------------------------
+
+@include grid (xs, 2);
+@media screen and (min-width: 768px){
+	@include grid (m, 9);
+}
+@media screen and (min-width: 970px){
+	@include grid (l, 12);
+}
