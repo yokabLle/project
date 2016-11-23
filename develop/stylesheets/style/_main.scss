@@ -1,11 +1,17 @@
 // -------------------------------------------------------
-// PX TO REM
+// GLOBAL FONT-SIZE, FONT-FAMILY CONTROL
 // -------------------------------------------------------
 
-@mixin size($size: 'font-size:', $num: $global-size){
-  #{$size}:($num / $global-size) + rem;
+$global-size: 16px;
+
+html{
+	font-size: $global-size;
+}
+body {
+	font-family: 'Arial';
 }
 
+
 // -------------------------------------------------------
-// 
+// GLOBAL FONT-SIZE, FONT-FAMILY CONTROL
 // -------------------------------------------------------

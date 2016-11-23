@@ -2,10 +2,9 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var livereload = require('gulp-livereload');
 var rename = require("gulp-rename");
-var includer = require('gulp-htmlincluder');
 var sass = require('gulp-sass');
 var spritesmith = require('gulp.spritesmith');
-var templater = require('spritesheet-templates');
+var fileinclude = require('gulp-file-include');
 
 
 // -----------------------------------
@@ -23,10 +22,13 @@ gulp.task('connect', function() {
 // Tasks
 // -----------------------------------
 
-// -----Html
+// -----html include
 gulp.task('htmlIncluder', function() {
-  gulp.src('develop/**/*.html')
-  	.pipe(includer())
+  gulp.src(['develop/index.html'])
+    .pipe(fileinclude({
+      prefix: '@@',
+      basepath: '@file'
+    }))
     .pipe(gulp.dest('build/'))
     .pipe(connect.reload());
 });
